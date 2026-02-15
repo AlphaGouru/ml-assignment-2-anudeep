@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import confusion_matrix, classification_report
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -15,7 +16,15 @@ model_name = st.selectbox(
 )
 
 if uploaded_file:
+    # Read dataset correctly
     data = pd.read_csv(uploaded_file, sep=';')
+
+    # Encode categorical columns
+    encoder = LabelEncoder()
+    for col in data.columns:
+        if data[col].dtype == 'object':
+            data[col] = encoder.fit_transform(data[col])
+
     model = joblib.load(f"models/{model_name.replace(' ', '_')}.pkl")
 
     X = data.drop("y", axis=1)
