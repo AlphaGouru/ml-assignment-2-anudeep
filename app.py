@@ -15,7 +15,7 @@ model_name = st.selectbox(
 )
 
 if uploaded_file:
-    data = pd.read_csv(uploaded_file)
+    data = pd.read_csv(uploaded_file, sep=';')
     model = joblib.load(f"models/{model_name.replace(' ', '_')}.pkl")
 
     X = data.drop("y", axis=1)
